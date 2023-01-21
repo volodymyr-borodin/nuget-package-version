@@ -1,0 +1,32 @@
+name: 'Nuget package version'
+description: 'Detect nuget package versions'
+branding:
+  icon: 'terminal'
+  color: 'gray-dark'
+
+inputs:
+  package:
+    description: 'Uniq package name'
+    required: true
+
+outputs:
+  all:
+    description: 'JSON array of available package versions'
+    value: ${{ steps.setup-output.outputs.all }}
+  latest:
+    description: 'Latest package version'
+    value: ${{ steps.setup-output.outputs.latest }}
+
+runs:
+  using: 'composite'
+  steps: 
+    - name: Fetch info
+      id: fetch-info
+      shell: bash
+      run: |
+        export RAW_RESPONSE=$(curl https://api.nuget.org/v3-flatcontainer/${{ inputs.package }}/index.json)
+        export JSON_ARRAY=$(echo $RAW_RESPONSE | jq ".versions")
+        export LATEST_VERSION=$(echo JSON_ARRAY | jq "last" | sed 's/\"//g')
+
+        echo "::set-output all=private-key-path::$JSON_ARRAY"
+        echo "::set-output latest=private-key-path::$LATEST_VERSION"
