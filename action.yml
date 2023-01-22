@@ -12,10 +12,10 @@ inputs:
 outputs:
   all:
     description: 'JSON array of available package versions'
-    value: ${{ steps.setup-output.outputs.all }}
+    value: ${{ steps.fetch-info.outputs.all }}
   latest:
     description: 'Latest package version'
-    value: ${{ steps.setup-output.outputs.latest }}
+    value: ${{ steps.fetch-info.outputs.latest }}
 
 runs:
   using: 'composite'
