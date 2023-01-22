@@ -26,7 +26,7 @@ runs:
       run: |
         export RAW_RESPONSE=$(curl https://api.nuget.org/v3-flatcontainer/${{ inputs.package }}/index.json)
         export JSON_ARRAY=$(echo $RAW_RESPONSE | jq ".versions")
-        export LATEST_VERSION=$(echo JSON_ARRAY | jq "last" | sed 's/\"//g')
+        export LATEST_VERSION=$(echo $JSON_ARRAY | jq "last" | sed 's/\"//g')
 
-        echo "::set-output all=private-key-path::$JSON_ARRAY"
-        echo "::set-output latest=private-key-path::$LATEST_VERSION"
+        echo "all={$JSON_ARRAY}" >> $GITHUB_OUTPUT
+        echo "latest={$LATEST_VERSION}" >> $GITHUB_OUTPUT
