@@ -10,9 +10,6 @@ inputs:
     required: true
 
 outputs:
-  all:
-    description: 'JSON array of available package versions'
-    value: ${{ steps.fetch-info.outputs.all }}
   latest:
     description: 'Latest package version'
     value: ${{ steps.fetch-info.outputs.latest }}
@@ -27,9 +24,5 @@ runs:
         export RAW_RESPONSE=$(curl https://api.nuget.org/v3-flatcontainer/${{ inputs.package }}/index.json)
         export JSON_ARRAY=$(echo $RAW_RESPONSE | jq ".versions")
         export LATEST_VERSION=$(echo $JSON_ARRAY | jq "last" | sed 's/\"//g')
-        
-        echo $JSON_ARRAY
-        echo $LATEST_VERSION
 
-        echo "all=$(echo $JSON_ARRAY)" >> $GITHUB_OUTPUT
         echo "latest=$(echo $LATEST_VERSION)" >> $GITHUB_OUTPUT
