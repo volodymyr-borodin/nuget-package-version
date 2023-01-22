@@ -28,5 +28,5 @@ runs:
         export JSON_ARRAY=$(echo $RAW_RESPONSE | jq ".versions")
         export LATEST_VERSION=$(echo $JSON_ARRAY | jq "last" | sed 's/\"//g')
 
-        echo "all=$JSON_ARRAY" >> $GITHUB_OUTPUT
-        echo "latest=$LATEST_VERSION" >> $GITHUB_OUTPUT
+        echo "all=$(echo $JSON_ARRAY)" >> $GITHUB_OUTPUT
+        echo "latest=$(echo $LATEST_VERSION)" >> $GITHUB_OUTPUT
